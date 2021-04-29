@@ -1,0 +1,57 @@
+class Solution {
+public:
+    vector<int> ans;
+    void helper(vector<int>& nums, int target, int st, int end)
+    {
+        if(st>end)
+            return;
+        
+        int mid = (st+end)/2;
+        
+        if(nums.at(mid)==target)
+        {
+            if(ans.size()==0) // initialising ans vector with the first position at which target is found
+            {
+                ans.push_back(mid);
+                ans.push_back(mid);
+            }
+            else
+            {                 // comparing values present inside ans vector with the index found at mid
+                if(mid<ans[0])
+                    ans[0] = mid;
+                else if(mid>ans[1])
+                    ans[1] = mid;
+            }
+            helper(nums,target,st,mid-1);
+            helper(nums,target,mid+1,end);
+        }
+        else if(nums.at(mid)<target)
+        {
+            st = mid+1;
+            helper(nums,target,st,end);
+        }
+        else
+        {
+            end = mid-1;
+            helper(nums,target,st,end);
+            
+        }
+        return;
+    }
+    
+    
+    vector<int> searchRange(vector<int>& nums, int target) {
+        
+        int st = 0, end = nums.size()-1;
+        helper(nums,target,st,end);
+        if(ans.size()==0) // for case when no target element is found
+        {
+            ans.push_back(-1);
+            ans.push_back(-1);
+        }
+        return ans;
+        
+    }
+};
+
+
